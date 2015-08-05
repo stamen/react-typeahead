@@ -28,6 +28,7 @@ var Typeahead = React.createClass({
     allowCustomValues: React.PropTypes.number,
     defaultValue: React.PropTypes.string,
     value: React.PropTypes.string,
+    clearInputValue: React.PropTypes.bool,
     placeholder: React.PropTypes.string,
     textarea: React.PropTypes.bool,
     inputProps: React.PropTypes.object,
@@ -63,6 +64,7 @@ var Typeahead = React.createClass({
       allowCustomValues: 0,
       defaultValue: "",
       value: null,
+      clearInputValue: false,
       placeholder: "",
       textarea: false,
       inputProps: {},
@@ -281,9 +283,16 @@ var Typeahead = React.createClass({
   },
 
   componentWillReceiveProps: function(nextProps) {
-    this.setState({
-      visible: this.getOptionsForValue(this.state.entryValue, nextProps.options)
-    });
+    if (nextProps.clearInputValue) {
+      this.setState({
+        entryValue: '',
+        visible: this.getOptionsForValue(this.state.entryValue, nextProps.options)
+      });
+    } else {
+      this.setState({
+        visible: this.getOptionsForValue(this.state.entryValue, nextProps.options)
+      });
+    }
   },
 
   render: function() {
